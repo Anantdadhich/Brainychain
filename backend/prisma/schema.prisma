@@ -1,0 +1,23 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String  @id @default(uuid())
+  name      String  @unique
+  isWallet  Boolean @default(false)
+  nftminted Int     @default(0)
+
+  tokenminted Int @default(0)
+
+  walletaddress   String @default("")
+  imgUses         Int    @default(0)
+  walletSecretkey String @default("")
+  passwordhash    String @default("")
+  walletMnemonic  String @default("")
+}
