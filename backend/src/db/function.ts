@@ -1,4 +1,5 @@
-import prisma from "./db"
+import prisma from ".";
+
 
 interface Metrics {
     img?:boolean,
