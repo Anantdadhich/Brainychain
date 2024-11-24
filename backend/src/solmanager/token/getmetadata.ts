@@ -1,6 +1,6 @@
 import { Context } from "telegraf";
 import { Message } from "telegraf/typings/core/types/typegram";
-import { bot } from "../../telbot/bot";
+import { bot } from "../../telbot/bot.js";
 
 const validurl = (urlString: string) => {
     const urlPattern = new RegExp('^(https?:\\/\\/)?' +

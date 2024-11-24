@@ -1,10 +1,11 @@
-import { dirname, resolve } from "path";
+
 import { fileURLToPath } from "url";
 import  express , { Express,Request,Response }  from "express";
 import dotenv from "dotenv"
-import { Prisma, PrismaClient } from "@prisma/client";
+import path, { dirname, resolve } from "path";
+import {  PrismaClient } from "@prisma/client";
 import { clusterApiUrl, Connection } from "@solana/web3.js";
-import botCommands from "./telbot/bot";
+import botCommands from "./telbot/bot.js";
 
 const __filename=fileURLToPath(import.meta.url);
 const __dirname=dirname(__filename)

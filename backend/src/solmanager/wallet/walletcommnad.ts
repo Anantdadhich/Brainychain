@@ -1,19 +1,19 @@
 import { Context } from "telegraf";
-import { WalletGenerate, warningMessage } from "./wallet";
-import { bot } from "../../telbot/bot";
+import { WalletGenerate, warningMessage } from "./wallet.js";
+import { bot } from "../../telbot/bot.js";
 import prisma from "../../db";
 import { message } from "telegraf/filters";
 import bcrypt from "bcrypt"
 import { mnemonicToSeedSync } from "bip39";
 import { derivePath } from "ed25519-hd-key";
 import { Keypair } from "@solana/web3.js";
-import dbMetricsUpdate, { getIsWallet, isWallet } from "../../db/function";
+import dbMetricsUpdate, { getIsWallet, isWallet } from "../../db/function.js";
 import { Message } from "telegraf/typings/core/types/typegram";
-import CreateNFTcollec, { NFTdetails } from "../nft/createnftcollection";
-import { TokenInfo } from "../token/getmetadata";
+import CreateNFTcollec, { NFTdetails } from "../nft/createnftcollection.js";
+import { TokenInfo } from "../token/getmetadata.js";
 import  pTimeout from  "p-timeout"
-import { creatminttoken } from "../token/createtoken";
-import { CreateNFT } from "../nft/createnft";
+import { creatminttoken } from "../token/createtoken.js";
+import { CreateNFT } from "../nft/createnft.js";
 let boton=false;
 
 export async function handleWalletReply(ctx:Context){

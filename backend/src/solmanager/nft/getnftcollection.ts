@@ -1,13 +1,13 @@
 import { Message } from "telegraf/typings/core/types/typegram";
 
 import { Context } from "telegraf";
-import { bot } from "../../telbot/bot";
-import { WalletDeduction } from "../wallet/walletcommnad";
+import { bot } from "../../telbot/bot.js";
+import { WalletDeduction } from "../wallet/walletcommnad.js";
 
-import { WARNING_MESSAGE_IMAGE_UPLOAD } from "../token/tokenmessage";
+import { WARNING_MESSAGE_IMAGE_UPLOAD } from "../token/tokenmessage.js";
 import { message } from "telegraf/filters";
 
-import { uploadImagePermUrl } from "../imageuploader/commands";
+import { uploadImagePermUrl } from "../imageuploader/commands.js";
 
 
 

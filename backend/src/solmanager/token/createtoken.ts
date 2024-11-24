@@ -1,8 +1,8 @@
 import { clusterApiUrl, PublicKey, sendAndConfirmTransaction, Transaction } from "@solana/web3.js";
 import prisma from "../../db";
-import { TokenInfo } from "./getmetadata";
-import { convertToKeyPair } from "../wallet/wallet";
-import metaDataJsonUrl from "../imageuploader/imagemetadata";
+import { TokenInfo } from "./getmetadata.js";
+import { convertToKeyPair } from "../wallet/wallet.js";
+import metaDataJsonUrl from "../imageuploader/imagemetadata.js";
 import { createMint, ExtensionType, getMint, getMintLen, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
 import { connection } from "../..";
 import { createMetadataAccountV3, mintArgs, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";

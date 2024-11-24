@@ -1,9 +1,9 @@
 import { Context } from "telegraf";
 import { Message } from "telegraf/typings/core/types/typegram";
-import { WalletDeduction } from "../wallet/walletcommnad";
-import { bot } from "../../telbot/bot";
-import { WARNING_MESSAGE_IMAGE_UPLOAD } from "../token/tokenmessage";
-import { uploadImagePermUrl } from "../imageuploader/commands";
+import { WalletDeduction } from "../wallet/walletcommnad.js";
+import { bot } from "../../telbot/bot.js";
+import { WARNING_MESSAGE_IMAGE_UPLOAD } from "../token/tokenmessage.js";
+import { uploadImagePermUrl } from "../imageuploader/commands.js";
 import { message } from "telegraf/filters";
 
 const isValidUrl = (urlString: string) => {

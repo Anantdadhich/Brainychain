@@ -1,12 +1,12 @@
 import { createUmi, generateSigner, keypairIdentity, percentAmount } from "@metaplex-foundation/umi";
 import prisma from "../../db"
-import { convertToKeyPair } from "../wallet/wallet";
+import { convertToKeyPair } from "../wallet/wallet.js";
 import { clusterApiUrl,type Cluster } from "@solana/web3.js";
 import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
 import { ExtensionType, getMintLen } from "@solana/spl-token";
 import { connection } from "../..";
-import metaDataJsonUrl from "../imageuploader/imagemetadata";
+import metaDataJsonUrl from "../imageuploader/imagemetadata.js";
 import { getExplorerLink } from "@solana-developers/helpers";
 
 

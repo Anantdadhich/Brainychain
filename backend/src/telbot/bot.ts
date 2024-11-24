@@ -2,14 +2,14 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import dotenv from  "dotenv"
 import { Telegraf } from "telegraf";
-import { addUser } from "../db/function";
+import { addUser } from "../db/function.js";
 import { message } from "telegraf/filters";
 import prisma from "../db";
-import { geminiReply, helpfromGemini } from "../gemini/gemini";
-import imageUpload from "../solmanager/imageuploader/commands";
-import createNFTcommands from "../solmanager/nft/command";
-import WalletCommands, { hashPassandstore } from "../solmanager/wallet/walletcommnad";
-import tokenCommnads from "../solmanager/token/tokencommands";
+import { geminiReply, helpfromGemini } from "../gemini/gemini.js";
+import imageUpload from "../solmanager/imageuploader/commands.js";
+import createNFTcommands from "../solmanager/nft/command.js";
+import WalletCommands, { hashPassandstore } from "../solmanager/wallet/walletcommnad.js";
+import tokenCommnads from "../solmanager/token/tokencommands.js";
 
 
 const __filename=fileURLToPath(import.meta.url);
