@@ -1,46 +1,43 @@
-require("dotenv")
-import express, { json } from "express"
-import cors from  "cors"
-import jwt from  "jsonwebtoken"
-import bs58 from  "bs58"
-import { clusterApiUrl, Connection } from "@solana/web3.js"
+import { dirname, resolve } from "path";
+import { fileURLToPath } from "url";
+import  express , { Express,Request,Response }  from "express";
+import dotenv from "dotenv"
+import { Prisma, PrismaClient } from "@prisma/client";
+import { clusterApiUrl, Connection } from "@solana/web3.js";
+import botCommands from "./telbot/bot";
+
+const __filename=fileURLToPath(import.meta.url);
+const __dirname=dirname(__filename)
+
+dotenv.config({path:resolve(__dirname,"../.env")});
 
 
-const app=express()
-app.use(express.json())  //middleware 
-app.use(cors())    // used for heaadeers auth
-const JWT_SECERET="123456"
+if(!process.env.DATABASE_URL){
+    throw Error("no databse connect")
+}
 
-export const connection=new Connection(clusterApiUrl("devnet"));
+const primsa =new PrismaClient();
 
+export const app:Express=express()
 
-app.post("/api/v1/signup",(req,res)=>{
+const port=3000;
 
-    res.json({
+export const connection=new  Connection(clusterApiUrl("devnet")) 
 
-    })
-})
+app.get("/",async (req:Request,res:Response)=>{ 
 
+    try {
+        const users=await primsa.user.findMany();
+        res.status(200).json({message:"he",users})
+    } catch (error) {
+         console.error("Error fetching data:", error);
+        res.status(500).send("Internal Server Error");
+    }
+}) 
+    
 
-app.post("/api/v1/signin",(req,res)=>{
+botCommands()
 
-    res.json({
-        
-    })
-})
-
-
-app.post("/api/v1/txn/sig",(req,res)=>{
-
-    res.json({
-        
-    })
-})
-
-
-app.get("/api/v1/txn",(req,res)=>{
-
-    res.json({
-        
-    })
-})
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});

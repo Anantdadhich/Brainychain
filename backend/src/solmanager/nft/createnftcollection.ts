@@ -1,6 +1,6 @@
 import { createUmi, generateSigner, keypairIdentity, percentAmount } from "@metaplex-foundation/umi";
 import prisma from "../../db"
-import { convertToKeyPair } from "../wallet";
+import { convertToKeyPair } from "../wallet/wallet";
 import { clusterApiUrl,type Cluster } from "@solana/web3.js";
 import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";

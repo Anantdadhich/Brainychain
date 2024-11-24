@@ -3,8 +3,8 @@ import axios from "axios"
 import { generateMnemonic, mnemonicToSeedSync } from "bip39"
 import { derivePath } from "ed25519-hd-key";
 import path from "path"
-import prisma from "../db";
-import { connection } from "..";
+import prisma from "../../db";
+import { connection } from "../..";
 
 
 
@@ -22,7 +22,7 @@ export async function convertToKeyPair(mnemonic:string){
 } 
 
 
-async function WalletGenerate(name:string){
+export async function WalletGenerate(name:string){
     try {
          const mnemonic=generateMnemonic();
          const wallet=await convertToKeyPair(mnemonic)
@@ -54,4 +54,20 @@ export async function balanceFromWallet(userPubkey:PublicKey):Promise<number>  {
       return 0;  
     }
 }
+
+export const warningMessage = `
+**⚠️ Critical Warning: Handle with Extreme Care ⚠️**
+
+**Revealing your private key exposes your wallet to severe risks.**
+
+* **Unauthorized Access:** Anyone with your private key can steal your funds.
+* **Irreversible Loss:** Once compromised, your assets may be permanently lost.
+
+**Proceed with utmost caution. Ensure your device and environment are secure.**
+`;
+
+
+
+
+
 

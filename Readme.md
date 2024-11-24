@@ -15,3 +15,13 @@ I used Metaplex which simplifies the creation of NFTs by handling complex intera
 ## Bot token
 
 The Bot Token is an authorization token provided by Telegram when you create a bot using the BotFather.
+
+## Tech Stack
+
+-express
+-geminiapi
+-telegraf
+-solWeb3.js
+-Metaplex Lib for creating NFT
+-Pinata for cloud storage
+-Prisma for Database

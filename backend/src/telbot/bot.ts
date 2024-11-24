@@ -7,6 +7,9 @@ import { message } from "telegraf/filters";
 import prisma from "../db";
 import { geminiReply, helpfromGemini } from "../gemini/gemini";
 import imageUpload from "../solmanager/imageuploader/commands";
+import createNFTcommands from "../solmanager/nft/command";
+import WalletCommands, { hashPassandstore } from "../solmanager/wallet/walletcommnad";
+import tokenCommnads from "../solmanager/token/tokencommands";
 
 
 const __filename=fileURLToPath(import.meta.url);
@@ -57,7 +60,7 @@ bot.command("start",async(str)=>{
           str.reply("Password set succesfully");
           str.reply("start with /createwalleet");
 
-      setTimeout(()=>hashPassAndStore(str,str.message.text),1000)
+      setTimeout(()=>hashPassandstore(str,str.message.text),1000)
       isbotstarting=false;
       } catch (error) {
            console.error("Error in text message handler:", error);
@@ -122,7 +125,7 @@ bot.command("askai",async(str)=>{
         return 
     }
 
-    await str.reply("Hey there! 👋 I'm BrainyChain, your AI-powered Telegram bot 🤖. Feel free to ask me anything – I'm here to help with token creation 💰, NFT minting 🎨, wallet management 🔐, and so much more! Just drop your question, and I'll be ready for the next chat! 💬");
+    await str.reply("Hey there! 👋 I'm BrainyChain, your AI-powered Telegram bot created by adtech 🤖. Feel free to ask me anything – I'm here to help with token creation 💰, NFT minting 🎨, wallet management 🔐, and so much more! Just drop your question, and I'll be ready for the next chat! 💬");
             await str.reply("To exit the chat, use /exit command");
        
             prompt=true;
@@ -190,8 +193,17 @@ bot.on(message("text"),async (str,next)=>{
           console.error("Error in text message handler:", error);
             str.reply("Something went wrong. Please try again later.");
     }
-})
+}) 
+       tokenCommnads()
+       createNFTcommands()
+       WalletCommands();
 
-     imageUpload()
+
+     imageUpload() 
+
+     bot.launch();
+
+       process.once('SIGINT', () => bot.stop('SIGINT'))
+    process.once('SIGTERM', () => bot.stop('SIGTERM')) 
 }
 

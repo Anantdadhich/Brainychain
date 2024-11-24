@@ -2,12 +2,13 @@ import axios from "axios";
 import FormData from "form-data";
 import dotenv from "dotenv";
 import { NFTdetails } from "../nft/createnftcollection";
+import { TokenInfo } from "../token/getmetadata";
 
 dotenv.config();
 
 export default async function metaDataJsonUrl(tokenMetadata: TokenInfo | NFTdetails) {
     const data = {
-        name: tokenMetadata.tokenName,
+        name: tokenMetadata.tokenname,
         symbol: tokenMetadata.symbol,
         description: tokenMetadata.description,
         image: tokenMetadata.imgUrl
