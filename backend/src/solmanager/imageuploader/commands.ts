@@ -2,9 +2,10 @@ import { message } from "telegraf/filters";
 
 import axios from "axios";
 import sharp from "sharp";
-import { metadataImageUrl } from "./imageupload.js";
-import dbMetricsUpdate, { getImage } from "../../db/function.js";
-import { bot } from "../../telbot/bot.js";
+import { metadataImageUrl } from "./imageupload";
+import dbMetricsUpdate, { getImage } from "../../db/function";
+import { bot } from "../../telbot/bot";
+
 
 export async function uploadImagePermUrl(ctx: any) {
     try {

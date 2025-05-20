@@ -1,10 +1,11 @@
 import { Context } from "telegraf";
-import { Message } from "telegraf/typings/core/types/typegram";
-import { WalletDeduction } from "../wallet/walletcommnad.js";
-import { bot } from "../../telbot/bot.js";
-import { WARNING_MESSAGE_IMAGE_UPLOAD } from "../token/tokenmessage.js";
-import { uploadImagePermUrl } from "../imageuploader/commands.js";
+import { Message } from "telegraf/types";
+
 import { message } from "telegraf/filters";
+import { WalletDeduction } from "../wallet/walletcommnad";
+import { bot } from "../../telbot/bot";
+import { uploadImagePermUrl } from "../imageuploader/commands";
+import { WARNING_MESSAGE_IMAGE_UPLOAD } from "../token/tokenmessage";
 
 const isValidUrl = (urlString: string) => {
     var urlPattern = new RegExp('^(https?:\\/\\/)?' + 
@@ -41,11 +42,11 @@ export let nftdetails:NFTdetais={
 let isMetalist=false;
 let isPhotolist=false;
 
-let message1:Message
-let message2:Message
-let message3:Message
-let message4:Message
-let message5:Message
+let message1:Message|undefined
+let message2:Message|undefined
+let message3:Message|undefined
+let message4:Message|undefined
+let message5:Message|undefined
  
 //add the cancel and goback function
 
@@ -240,14 +241,14 @@ let  confirmMessage:Message
     });
 
       bot.action("imgUp", async (ctx) => {
-        ctx.deleteMessage(message5.message_id);
-        await ctx.reply(`${WARNING_MESSAGE_IMAGE_UPLOAD} 😊`);
+        ctx.deleteMessage(message5!.message_id);
+         await ctx.reply(`${WARNING_MESSAGE_IMAGE_UPLOAD} 😊`);
         isPhotolist = true;
         await ctx.answerCbQuery();
     });
 
     bot.action("urlUp", async (ctx) => {
-        ctx.deleteMessage(message5.message_id);
+        ctx.deleteMessage(message5!.message_id);
         await ctx.reply("Please enter the image URL 🌐");
          isPhotolist = false;
         stage = 5;
@@ -301,7 +302,7 @@ let  confirmMessage:Message
         for(let i=0;i<mesgtodelete.length ;i++){
 
              if(stage===i+1 && mesgtodelete[i]){
-                ctx.deleteMessage(mesgtodelete[i].message_id)
+                ctx.deleteMessage(mesgtodelete[i]!.message_id)
             }
         }
         await goBack(ctx,next);

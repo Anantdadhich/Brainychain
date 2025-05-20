@@ -1,11 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
+import { bot } from "../../telbot/bot";
 import prisma from "../../db";
-import { bot } from "../../telbot/bot.js";
-import { balanceFromWallet, convertToKeyPair } from "../wallet/wallet.js";
-import { getmetadatafromuser } from "./getmetadata.js";
-import { ENTER_MINT_AMOUNT_MSG, ENTER_PUBLIC_KEY_MSG, INSUFFICIENT_BALANCE_MSG, INVALID_AMOUNT_MSG, INVALID_PUBLIC_KEY_MSG, MINT_ERROR_MSG, MINT_SUCCESS_MSG, MINT_TOKEN_DESTINATION_MSG, MINTING_PROCESS_ERROR_MSG } from "./tokenmessage.js";
+import { balanceFromWallet, convertToKeyPair } from "../wallet/wallet";
+import { ENTER_MINT_AMOUNT_MSG, ENTER_PUBLIC_KEY_MSG, INSUFFICIENT_BALANCE_MSG, INVALID_AMOUNT_MSG, INVALID_PUBLIC_KEY_MSG, MINT_ERROR_MSG, MINT_SUCCESS_MSG, MINT_TOKEN_DESTINATION_MSG, MINTING_PROCESS_ERROR_MSG } from "./tokenmessage";
+import { getmetadatafromuser } from "./getmetadata";
 import { message } from "telegraf/filters";
-import { mintToken } from "./createtoken.js";
+import { mintToken } from "./createtoken";
+
+
 
 
 

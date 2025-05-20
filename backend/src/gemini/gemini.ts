@@ -1,13 +1,7 @@
-import path, { dirname } from  "path"
-import {fileURLToPath} from "url"
-import dotenv from "dotenv"
 import { GoogleGenerativeAI } from "@google/generative-ai"
+import dotenv from "dotenv"
 
-
-const __filename=fileURLToPath(import.meta.url);
-const __dirname=dirname(__filename)
-
-dotenv.config({path:path.resolve(__dirname,"../.env")})
+dotenv.config()
 
 if(!process.env.GOOGLE_GEMINI_API){
     throw Error("no key ")
@@ -16,7 +10,7 @@ if(!process.env.GOOGLE_GEMINI_API){
 const genaicall=new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API!)
 
 const geniaimodel=genaicall.getGenerativeModel({
-    model:"gemini-1.5-flash-exp-0827"
+    model:"gemini-2.0-flash"
 });
 
 export async function geminiReply(emoji:string,name:string){
@@ -25,7 +19,7 @@ export async function geminiReply(emoji:string,name:string){
         const result=await geniaimodel.generateContent(`"You are a Solana token dispenser bot on Telegram. Your job is to respond to user messages with humorous comments. When a user ${name} sends a message, you should:
 - Acknowledge the input with a playful and intelligent tone.
 - Make it clear you're an advanced but reluctant machine.
-- inform them to spend some SOL and use the /createToken command to create their favorite token or memecoin or /createNFT command to create NFT's.
+- inform them to spend some SOL and use the /createtoken command to create their favorite token or memecoin or /createnft command to create NFT's.
 Ensure each response is brief, funny, and fits within a single message. Use ${emoji} as input, but remember to give only one response.
 "`);
    

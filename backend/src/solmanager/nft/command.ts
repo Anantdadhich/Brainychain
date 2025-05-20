@@ -1,11 +1,13 @@
 import { PublicKey } from "@solana/web3.js";
+
+import { Message } from "telegraf/types";
+import { bot } from "../../telbot/bot";
 import prisma from "../../db";
-import { bot } from "../../telbot/bot.js";
-import { balanceFromWallet, convertToKeyPair } from "../wallet/wallet.js";
-import { INSUFFICIENT_BALANCE_MSG } from "../token/tokenmessage.js";
-import { Message } from "telegraf/typings/core/types/typegram";
-import { getNFTCollectionmetadata } from "./getnftcollection.js";
-import { getNFTmetadata } from "./getnft.js";
+import { balanceFromWallet, convertToKeyPair } from "../wallet/wallet";
+import { INSUFFICIENT_BALANCE_MSG } from "../token/tokenmessage";
+import { getNFTCollectionmetadata } from "./getnftcollection";
+import { getNFTmetadata } from "./getnft";
+
 
 
 

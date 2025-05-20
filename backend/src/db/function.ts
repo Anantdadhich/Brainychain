@@ -1,10 +1,11 @@
-import prisma from ".";
+import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
 
 interface Metrics {
-    img?:boolean,
-    nft?:boolean,
-    token?:boolean
+    img?: boolean,
+    nft?: boolean,
+    token?: boolean
 }
 
 async function dbMetricsUpdate(name:string,metrics?:Metrics){

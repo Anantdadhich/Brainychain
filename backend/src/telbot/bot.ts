@@ -1,32 +1,40 @@
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
-import dotenv from  "dotenv"
+import dotenv from "dotenv";
 import { Telegraf } from "telegraf";
-import { addUser } from "../db/function.js";
+
 import { message } from "telegraf/filters";
-import prisma from "../db";
-import { geminiReply, helpfromGemini } from "../gemini/gemini.js";
-import imageUpload from "../solmanager/imageuploader/commands.js";
-import createNFTcommands from "../solmanager/nft/command.js";
-import WalletCommands, { hashPassandstore } from "../solmanager/wallet/walletcommnad.js";
-import tokenCommnads from "../solmanager/token/tokencommands.js";
+import { PrismaClient } from "@prisma/client";
+import { addUser } from "../db/function";
+import WalletCommands, { hashPassandstore } from "../solmanager/wallet/walletcommnad";
+import { geminiReply, helpfromGemini } from "../gemini/gemini";
+import tokenCommnads from "../solmanager/token/tokencommands";
+import createNFTcommands from "../solmanager/nft/command";
+import imageUpload from "../solmanager/imageuploader/commands";
 
 
-const __filename=fileURLToPath(import.meta.url);
-const __dirname=dirname(__filename)
 
-dotenv.config({path:
-    path.resolve(__dirname,"../.env")
-});
 
-if(!process.env.BOT_TOKEN){
-    throw Error("no bot found ")
+
+dotenv.config()
+
+
+
+if (!process.env.BOT_TOKEN) {
+    throw Error("no bot found");
 }
 
+const prisma = new PrismaClient();
+export const bot = new Telegraf(process.env.BOT_TOKEN);
 
-export const bot=new Telegraf(process.env.BOT_TOKEN);
-
-await bot.telegram.setWebhook(process.env.WEBHOOK_URL!);
+// Setup webhook if WEBHOOK_URL is provided
+if (process.env.WEBHOOK_URL) {
+    bot.telegram.setWebhook(process.env.WEBHOOK_URL)
+        .then(() => console.log('Webhook set successfully'))
+        .catch((error) => console.error('Error setting webhook:', error));
+} else {
+    console.log('No webhook URL provided, running in polling mode');
+}
 
 let prompt=false;
 //user start the bot 

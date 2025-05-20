@@ -4,9 +4,9 @@ import dotenv from "dotenv";
 import { fileURLToPath } from "url";
 import FormData from "form-data";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-dotenv.config({ path: path.resolve(__dirname, "../.env") });
+
+dotenv.config()
+
 
 if (!process.env.PINATA_JWT) {
     throw Error("No Pinata JWT found")

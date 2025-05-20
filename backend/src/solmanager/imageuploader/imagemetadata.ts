@@ -1,8 +1,9 @@
 import axios from "axios";
 import FormData from "form-data";
 import dotenv from "dotenv";
-import { NFTdetails } from "../nft/createnftcollection.js";
-import { TokenInfo } from "../token/getmetadata.js";
+import { TokenInfo } from "../token/getmetadata";
+import { NFTdetails } from "../nft/createnftcollection";
+;
 
 dotenv.config();
 

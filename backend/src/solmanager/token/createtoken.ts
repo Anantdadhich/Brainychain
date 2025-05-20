@@ -1,21 +1,26 @@
 import { clusterApiUrl, PublicKey, sendAndConfirmTransaction, Transaction } from "@solana/web3.js";
-import prisma from "../../db";
-import { TokenInfo } from "./getmetadata.js";
-import { convertToKeyPair } from "../wallet/wallet.js";
-import metaDataJsonUrl from "../imageuploader/imagemetadata.js";
+
 import { createMint, ExtensionType, getMint, getMintLen, getOrCreateAssociatedTokenAccount, mintTo } from "@solana/spl-token";
-import { connection } from "../..";
-import { createMetadataAccountV3, mintArgs, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
-import { createNoopSigner, createUmi ,publicKey as metaplexPubkey} from "@metaplex-foundation/umi";
+
+import { createMetadataAccountV3,  mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
+import { createNoopSigner,publicKey as metaplexPubkey} from "@metaplex-foundation/umi";
 import { toWeb3JsInstruction } from "@metaplex-foundation/umi-web3js-adapters";
 import { getExplorerLink } from "@solana-developers/helpers";
+import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
+import { convertToKeyPair } from "../wallet/wallet";
+import metaDataJsonUrl from "../imageuploader/imagemetadata";
+import prisma from "../../db";
+import { connection } from "../../connection";
+import { TokenInfo } from "./getmetadata";
+
+
 
 
 
 
 
 const TOKEN_METADATA_PROGRAM_ID=new PublicKey(
-    ""
+    "75RKxPxsXtL7KffGijaGAYWE86VGE8hBJWnraXULR39U"
 )
 
 let tokenMint:PublicKey
