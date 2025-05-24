@@ -1,4 +1,4 @@
-import axios from "axios";
+/*import axios from "axios";
 import path, { dirname } from "path";
 import dotenv from "dotenv";
 import { fileURLToPath } from "url";
@@ -39,4 +39,42 @@ export async function metadataImageUrl(buffer: Buffer) {
         console.error('Pinata upload error:', error);
         throw error;
     }
+}*/
+
+import axios from "axios";
+import FormData from "form-data";
+import dotenv from "dotenv";
+
+dotenv.config();
+
+if (!process.env.PINATA_JWT) {
+  throw new Error("No Pinata JWT found");
+}
+
+export async function metadataImageUrl(buffer: Buffer) {
+  const formData = new FormData();
+  formData.append("file", buffer, {
+    filename: "image.png",
+    contentType: "image/png",
+  });
+
+  try {
+    const response = await axios.post("https://api.pinata.cloud/v3/files", formData, {
+      headers: {
+        Authorization: `Bearer ${process.env.PINATA_JWT}`,
+        ...formData.getHeaders(),
+      },
+    });
+
+    const { cid } = response.data.data;
+    const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${cid}`;
+
+    return {
+      ipfsHash: cid,
+      ipfsUrl,
+    };
+  } catch (error) {
+    console.error("Pinata upload error:", error);
+    throw error;
+  }
 }

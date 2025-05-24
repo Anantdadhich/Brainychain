@@ -11,7 +11,7 @@ import prisma from "../../db";
 import { NFTdetails } from "./createnftcollection";
 import { convertToKeyPair } from "../wallet/wallet";
 import { connection } from "../../connection";
-import metaDataJsonUrl from "../imageuploader/imagemetadata";
+import { metaDataJsonUrl } from "../imageuploader/imagemetadata";
 
 
 

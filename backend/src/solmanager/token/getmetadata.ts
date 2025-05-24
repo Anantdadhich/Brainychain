@@ -1,6 +1,10 @@
 import { Context } from "telegraf";
 import { Message } from "telegraf/types";
 import { bot } from "../../telbot/bot";
+import { WARNING_MESSAGE_IMAGE_UPLOAD } from "./tokenmessage";
+import { message } from "telegraf/filters";
+import { uploadImagePermUrl } from "../imageuploader/commands";
+import { WalletDeduction } from "../wallet/walletcommnad";
 
 
 const validurl = (urlString: string) => {
@@ -10,7 +14,7 @@ const validurl = (urlString: string) => {
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
         '(\\?[;&a-z\\d%_.~+=-]*)?' +
         '(\\#[-a-z\\d_]*)?$', 'i');
-    return !urlPattern.test(urlString);
+    return urlPattern.test(urlString);
 }
 
 export interface TokenInfo {
@@ -138,14 +142,32 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
 
             case 5 : 
             if(inputText){
-                if(validurl(inputText)){
-                    await ctx.reply("oops that does'nt look like a valid url ")
+                if(!validurl(inputText)){
+                    await ctx.reply("Oops! That doesn't look like a valid URL. Please enter a valid image URL.")
                    return;
                 }
                 tokeninfo.imgUrl=inputText;
-                
+                const confirm = await WalletDeduction({token: true}, ctx, tokeninfo);
+                if(confirm) {
+                    stage = 1;
+                    await ctx.reply("Success! Token metadata created.");
+                    next();
+                } else {
+                    stage = 1;
+                    ismetadatalist = false;
+                    isPhlist = false;
+                    next();
+                }
+            } else {
+                message5 = await ctx.reply("Please enter the image URL for your token:", {
+                    reply_markup: {
+                        inline_keyboard: [
+                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "Cancel" }]
+                        ]
+                    }
+                });
             }
-             
+            break;
 
     }
 }
@@ -156,12 +178,89 @@ export async function getmetadatafromuser(ctx:Context){
       confirmMessage = await ctx.reply("Are you ready to create your token? 🎉", {
         reply_markup: {
             inline_keyboard: [
-                [{ text: "Yes, let's go! 🚀", callback_data: "YesCreateToken" }, { text: "No, not now 😅", callback_data: "NoDontCreateToken" }]
+                [{ text: "Yes, let's go! 🚀", callback_data: "YesCreate" }, { text: "No, not now 😅", callback_data: "NoDontCreate" }]
             ]
         }
     })
 
-    bot.action("no",(ctx)=>{
-        
+    bot.action("NoDontCreate",(ctx)=>{
+         ctx.reply("Alright may be next time ")
+         ctx.answerCbQuery("ok")
     })
+
+    bot.action("YesCreate",async(ctx,next)=>{ 
+        ctx.deleteMessage(confirmMessage.message_id) 
+        await ctx.reply("Important please do not use any other commands while creating your tokens .this could be disrupt the process")
+        await ctx.answerCbQuery("lets go started") 
+
+        ismetadatalist=true 
+        handleStage(ctx,null,next) 
+                 
+    })
+    
+    bot.action("ImgUp",async(ctx)=>{
+        ctx.deleteMessage(message5!.message_id) 
+        await ctx.reply(`${WARNING_MESSAGE_IMAGE_UPLOAD}`) 
+        isPhlist=true 
+        await ctx.answerCbQuery() 
+    })
+   
+
+    bot.action("urlUp",async (ctx)=>{
+        ctx.deleteMessage(message5!.message_id) 
+        await ctx.reply("please enter the image url") 
+        isPhlist=false 
+        stage=5 
+        await ctx.answerCbQuery() 
+    })
+
+   
+    bot.on(message("photo"), async (ctx, next) => {
+        if (!ismetadatalist || !isPhlist) {
+            return next();
+        }
+        const imageUrl = await uploadImagePermUrl(ctx);
+        if (imageUrl) {
+            ctx.reply("Here is your image link");
+            ctx.reply(`[Click to open in browser](${imageUrl.ipfsHash.gatewayUrls[0]})`, { parse_mode: 'MarkdownV2' });
+            ctx.reply(`\`${imageUrl.ipfsHash.gatewayUrls[0]}\``, { parse_mode: 'MarkdownV2' });
+            tokeninfo.imgUrl = imageUrl.ipfsHash.gatewayUrls[0];
+            const isConfirmed = await WalletDeduction({ token: true }, ctx, tokeninfo);
+            if (isConfirmed) {
+                stage = 1;
+                await ctx.reply("🎉 Metadata with your uploaded image is all set!");
+            }else if(!isConfirmed){
+                stage = 1;
+                next();
+                ismetadatalist = false;
+                isPhlist = false;
+            }
+        }
+    });
+    
+    bot.on(message("text"), async (ctx, next) => {
+        if (!ismetadatalist) {
+            return next();
+        }
+
+        const inputText = ctx.message.text;
+        await handleStage(ctx, inputText, next);
+    });
+
+    bot.action("cancel", async (ctx) => {
+        await cancelProcess(ctx);
+        await ctx.answerCbQuery("Process cancelled");
+    });
+
+    bot.action("goBack", async (ctx, next) => {
+        const msgToDelete = [message1, message2, message3, message4, message5!];
+        for (let i = 0; i < msgToDelete.length; i++) {
+            if (stage === i + 1 && msgToDelete[i]) {
+                ctx.deleteMessage(msgToDelete[i].message_id);
+            }
+        }
+        await Back(ctx, next);
+        await ctx.answerCbQuery("Going back");
+    });
+
 }

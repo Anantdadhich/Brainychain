@@ -141,22 +141,20 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
        case 4 :
           if(inputText){
             if(inputText.toLowerCase()=='skip'){
-                nftdetails.collectibleId="",
-                stage=5
+                nftdetails.collectibleId="";
+                stage=5;
             }else {
                 if(!/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(inputText)){
-                    await ctx.reply("Please enter a valid Solana public key or type 'skip' ")
-                     return 
+                    await ctx.reply("Please enter a valid Solana public key or type 'skip' ");
+                    return;
                 }else {
                     nftdetails.collectibleId=inputText;
-                    stage=5
+                    stage=5;
                 }
             } 
-
-             await handleStage(ctx,null,next);
-
+            await handleStage(ctx,null,next);
          }else {
-            message1=await ctx.reply(" enter a collectible id  for yout NFT", {
+            message1=await ctx.reply("enter a collectible id for your NFT", {
                 reply_markup:{
                     inline_keyboard :[
                         [
@@ -167,40 +165,38 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
                 }
             })
          }     
-         break ;
-      case 4 : 
+         break;
+
+      case 5: 
         if(inputText){
              if(isValidUrl(inputText)){
-                await ctx.reply("enter the valid url for uploding the nft");
-                return
+                await ctx.reply("enter the valid url for uploading the nft");
+                return;
              }
-              nftdetails.imgUrl=inputText;
-              const confirm=await WalletDeduction({nftReg:true},ctx,nftdetails)
-               if(confirm){
+             nftdetails.imgUrl=inputText;
+             const confirm=await WalletDeduction({nftReg:true},ctx,nftdetails);
+             if(confirm){
                 stage=1;
-                await ctx.reply("Success we got metadata")
-                next()
-               }else if(!confirm){
+                await ctx.reply("Success we got metadata");
+                next();
+             }else if(!confirm){
                 stage=1;
                 next();
                 isMetalist=false;
-                isPhotolist=false  
-              
-            }
-            
-
+                isPhotolist=false;
+             }
          }else {
-            message1=await ctx.reply(" upload  your NFT", {
+            message5=await ctx.reply("upload your NFT", {
                 reply_markup:{
                     inline_keyboard :[
                          [{ text: "📸 Image", callback_data: "imgUp" }],
-                            [{ text: "🌐 URL of Image", callback_data: "urlUp" }],
-                            [{ text: "⬅️ Go Back", callback_data: "goBack" }, { text: "❌ Cancel", callback_data: "cancel" }]
+                         [{ text: "🌐 URL of Image", callback_data: "urlUp" }],
+                         [{ text: "⬅️ Go Back", callback_data: "goBack" }, { text: "❌ Cancel", callback_data: "cancel" }]
                     ]
                 }
             })
          }     
-         break ;
+         break;
    
    
         }
@@ -214,10 +210,10 @@ let  confirmMessage:Message
         reply_markup:{
             inline_keyboard:[
                 [{
-                    text:"yes lets go " ,callback_data:"yes nft created"
+                    text:"yes lets go " ,callback_data:"YesCreateNFT"
                 },{
                     text:"No, not now",
-                    callback_data:"no dont create nft "
+                    callback_data:"NoDontCreateNFT"
                 }]
             ]
 

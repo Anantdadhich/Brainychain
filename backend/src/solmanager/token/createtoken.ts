@@ -8,7 +8,7 @@ import { toWeb3JsInstruction } from "@metaplex-foundation/umi-web3js-adapters";
 import { getExplorerLink } from "@solana-developers/helpers";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { convertToKeyPair } from "../wallet/wallet";
-import metaDataJsonUrl from "../imageuploader/imagemetadata";
+import { metaDataJsonUrl } from "../imageuploader/imagemetadata";
 import prisma from "../../db";
 import { connection } from "../../connection";
 import { TokenInfo } from "./getmetadata";

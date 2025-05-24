@@ -56,20 +56,20 @@ bot.command("start",async(str)=>{
 
         await addUser(str.from.username);
         bot.telegram.sendMessage(str.chat.id,messagestart)
-       str.reply("To secure your wallet, please create a strong password. This will help protect your assets and keep your account safe!",{reply_markup:{force_reply:true}});
+        str.reply("To secure your wallet, please create a strong password. This will help protect your assets and keep your account safe!",{reply_markup:{force_reply:true}});
         isbotstarting=true;
 
         bot.on(message("text"),async(str,next)=>{
-      try {
+        try {
           if(!isbotstarting){
             return  next();
           }
 
           str.reply("Password set succesfully");
-          str.reply("start with /createwalleet");
+          str.reply("start with /createwallet");
 
-      setTimeout(()=>hashPassandstore(str,str.message.text),1000)
-      isbotstarting=false;
+         setTimeout(()=>hashPassandstore(str,str.message.text),1000)
+         isbotstarting=false;
       } catch (error) {
            console.error("Error in text message handler:", error);
                     str.reply("An error occurred while setting password");

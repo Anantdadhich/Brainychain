@@ -10,7 +10,7 @@ import { getExplorerLink } from "@solana-developers/helpers";
 import prisma from "../../db";
 import { convertToKeyPair } from "../wallet/wallet";
 import { connection } from "../../connection";
-import metaDataJsonUrl from "../imageuploader/imagemetadata";
+import { metaDataJsonUrl } from "../imageuploader/imagemetadata";
 
 
 
