@@ -4,7 +4,8 @@ import { generateMnemonic, mnemonicToSeedSync } from "bip39"
 import { derivePath } from "ed25519-hd-key";
 import path from "path"
 import prisma from "../../db";
-import { connection } from "../..";
+import { connection } from "../../connection";
+
 
 
 

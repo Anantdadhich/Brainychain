@@ -63,8 +63,10 @@ export default function imageUpload() {
                             
                                 if (result) {
                                     ctx.reply("Here is your image link");
-                                    ctx.reply(`[Click to open in browser](${result.ipfsUrl})`, { parse_mode: 'MarkdownV2' });
-                                    ctx.reply(`\`${result.ipfsUrl}\``, { parse_mode: 'MarkdownV2' });
+                                    const escapedUrl = escapeMarkdownV2(result.ipfsUrl);
+
+                                    ctx.reply(`[Click to open in browser](${escapedUrl})`, { parse_mode: 'MarkdownV2' });
+                                    ctx.reply(`\`${escapedUrl}\``, { parse_mode: 'MarkdownV2' });
                             
                                     await dbMetricsUpdate(String(ctx.from.username), { img: true });
                                 } else {
@@ -90,4 +92,9 @@ export default function imageUpload() {
     } catch (error) {
         console.error("Error setting up image upload command:", error);
     }
+}
+
+
+function escapeMarkdownV2(text: string): string {
+    return text.replace(/[_*[\]()~`>#+-=|{}.!]/g, '\\$&');
 }

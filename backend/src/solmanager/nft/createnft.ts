@@ -1,6 +1,5 @@
-import { createUmi, generateSigner, keypairIdentity, percentAmount } from "@metaplex-foundation/umi";
-
-import { Cluster, clusterApiUrl } from "@solana/web3.js";
+import {  generateSigner, keypairIdentity, percentAmount } from "@metaplex-foundation/umi";
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults'
 import { createNft, mplTokenMetadata } from "@metaplex-foundation/mpl-token-metadata";
 import { irysUploader } from "@metaplex-foundation/umi-uploader-irys";
 import { ExtensionType, getMintLen } from "@solana/spl-token";
@@ -10,8 +9,9 @@ import { getExplorerLink } from "@solana-developers/helpers";
 import prisma from "../../db";
 import { NFTdetails } from "./createnftcollection";
 import { convertToKeyPair } from "../wallet/wallet";
-import { connection } from "../../connection";
+
 import { metaDataJsonUrl } from "../imageuploader/imagemetadata";
+import { connection } from "../../connection";
 
 
 
@@ -37,11 +37,11 @@ try {
            throw new Error(" not found ")
        }
 
-       const wallet=await convertToKeyPair(mnemonic);
+    const wallet = await convertToKeyPair(mnemonic);
 
-       //we are using metaplex for minting thee token in thrr solana blockchaain 
-    //@ts-ignore
-       const metaplex=createUmi(clusterApiUrl("devnet")as Cluster);
+     
+      
+      const metaplex=createUmi(connection)
 
      const umikeypair=metaplex.eddsa.createKeypairFromSecretKey(wallet.userkeypair.secretKey)
 

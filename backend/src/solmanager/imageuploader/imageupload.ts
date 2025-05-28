@@ -59,18 +59,22 @@ export async function metadataImageUrl(buffer: Buffer) {
   });
 
   try {
-    const response = await axios.post("https://api.pinata.cloud/v3/files", formData, {
-      headers: {
-        Authorization: `Bearer ${process.env.PINATA_JWT}`,
-        ...formData.getHeaders(),
-      },
-    });
+    const response = await axios.post(
+      "https://api.pinata.cloud/pinning/pinFileToIPFS",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.PINATA_JWT}`,
+          ...formData.getHeaders(),
+        },
+      }
+    );
 
-    const { cid } = response.data.data;
-    const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${cid}`;
+    const { IpfsHash } = response.data;
+    const ipfsUrl = `https://gateway.pinata.cloud/ipfs/${IpfsHash}`;
 
     return {
-      ipfsHash: cid,
+      ipfsHash: IpfsHash,
       ipfsUrl,
     };
   } catch (error) {
@@ -78,3 +82,4 @@ export async function metadataImageUrl(buffer: Buffer) {
     throw error;
   }
 }
+

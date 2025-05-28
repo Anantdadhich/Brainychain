@@ -20,11 +20,11 @@ import { TokenInfo } from "./getmetadata";
 
 
 const TOKEN_METADATA_PROGRAM_ID=new PublicKey(
-    "75RKxPxsXtL7KffGijaGAYWE86VGE8hBJWnraXULR39U"
+    "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
 )
 
 let tokenMint:PublicKey
-  //@ts-ignore
+
 const metaplex=createUmi(clusterApiUrl("devnet")).use(mplTokenMetadata())
 
 

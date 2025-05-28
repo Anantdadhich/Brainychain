@@ -1,9 +1,7 @@
 import { fileURLToPath } from "url";
-import express, { Express, Request, Response } from "express";
-
+import express, { Request, Response } from "express";
 import { dirname, resolve } from "path";
 import { PrismaClient } from "@prisma/client";
-import { clusterApiUrl, Connection } from "@solana/web3.js";
 import botCommands, { bot } from "./telbot/bot";
 
 
@@ -11,7 +9,7 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-// Validate environment variables
+
 const requiredEnvVars = ['DATABASE_URL', 'BOT_TOKEN', 'WEBHOOK_URL'];
 for (const envVar of requiredEnvVars) {
     if (!process.env[envVar]) {
@@ -20,23 +18,25 @@ for (const envVar of requiredEnvVars) {
 }
 
 const prisma = new PrismaClient();
-export const app: Express = express();
+const app = express();
 const port = process.env.PORT || 3000;
 
-export const connection = new Connection(clusterApiUrl("devnet"));
+
 
 
 app.use(express.json());
 
 
 
-app.get("/", async (req: Request, res: Response) => {
+app.get("/", async (req, res) => {
     try {
         const users = await prisma.user.findMany();
         res.status(200).json({ message: "Server is running", users });
+        return
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).json({ error: "Internal Server Error" });
+        
     }
 });
 

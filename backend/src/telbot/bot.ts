@@ -215,3 +215,4 @@ bot.on(message("text"),async (str,next)=>{
     process.once('SIGTERM', () => bot.stop('SIGTERM')) 
 }
 
+

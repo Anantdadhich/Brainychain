@@ -38,6 +38,7 @@ export async function handleWalletReply(ctx:Context){
 
 
 export default async function  WalletCommands(){
+    
     try {
      bot.command("createwallet",async (ctx)=>{
            try {
@@ -249,7 +250,7 @@ export async function WalletDeduction({ nftcoll,
                         reply_markup:{
                             inline_keyboard:[
                                 [
-                                    {text:"yes ",callback_data:"yes create"},
+                                    {text:"yes ",callback_data:"yescreate"},
                                      {text:"no ",callback_data:"exit command"}
                                 ]
                             ]
@@ -319,7 +320,7 @@ export async function WalletDeduction({ nftcoll,
          //operation is wrapped in pTimeout, which gives it a maximum time limit of 90 seconds.   
            try {
             //@ts-ignore
-            const result = await pTimeout(creatminttoken(tokenmetadata as TokenInfo, ctx.from.username!), { milliseconds: 90000 });
+            const result = await pTimeout(creatminttoken(tokenmetadata as TokenInfo, ctx.from.username!), 90000);
               if(result){
                 await ctx.deleteMessage(message_id);
                 await dbMetricsUpdate(String(ctx.from.username
@@ -340,7 +341,7 @@ export async function WalletDeduction({ nftcoll,
          }else if(nftcoll) {
           try {
             //@ts-ignore
-              const result=await pTimeout(CreateNFTcollec(tokenmetadata ,ctx.from.username!) ,  {milliseconds:90000});
+              const result=await pTimeout(CreateNFTcollec(tokenmetadata ,ctx.from.username!) ,  90000);
               if(result){ 
                 //delete the sync messaage 
                 await ctx.deleteMessage(message_id);
@@ -356,7 +357,7 @@ export async function WalletDeduction({ nftcoll,
          }else if (nftReg){
            try {
             //@ts-ignore
-             const result=await pTimeout(CreateNFT(tokenmetadata ,ctx.from.username!),{milliseconds:90000});
+             const result=await pTimeout(CreateNFT(tokenmetadata ,ctx.from.username!), 90000);
             if(result){
                 await ctx.deleteMessage(message_id);
                 await dbMetricsUpdate(String(ctx.from.username) ,{nft:true})

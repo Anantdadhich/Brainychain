@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
+    "@metaplex-foundation/umi": "^1.2.0",
+    "@metaplex-foundation/umi-uploader-irys": "^1.2.0"
+  }
+}

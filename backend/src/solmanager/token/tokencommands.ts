@@ -121,7 +121,7 @@ export default async function tokenCommnads() {
     bot.action("externalac",async (ctx)=>{
         let stage=1;
         let pubKey:PublicKey;
-      const baase58RRegx=  /^[1-9A-HJ-NP-Za-km-z]+$/;
+      const baase58RRegx=/^[1-9A-HJ-NP-Za-km-z]+$/;
 
 
       async function promptforPublickey(){
@@ -137,9 +137,9 @@ export default async function tokenCommnads() {
 
       await promptforPublickey();
 
-      exitAclist=true;
+      isexternalaclist=true;
       bot.on(message("text"),async (ctx,next)=>{
-        if(!exitAclist) return next();
+        if(!isexternalaclist) return next();
         const inputtext=String(ctx.message.text).trim();
          if(stage===1){
             try {
