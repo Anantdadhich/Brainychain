@@ -8,11 +8,11 @@ import { WalletDeduction } from "../wallet/walletcommnad";
 
 
 const validurl = (urlString: string) => {
-    const urlPattern = new RegExp('^(https?:\\/\\/)?' +
-        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' +
-        '((\\d{1,3}\\.){3}\\d{1,3}))' +
-        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
-        '(\\?[;&a-z\\d%_.~+=-]*)?' +
+    const urlPattern=new RegExp('^(https?:\\/\\/)?' + 
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + 
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + 
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + 
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + 
         '(\\#[-a-z\\d_]*)?$', 'i');
     return urlPattern.test(urlString);
 }
@@ -92,7 +92,7 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
                 message2 = await ctx.reply("Enter your symbol (max 10 characters):", {
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "Cancel" }]
+                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "cancel" }]
                         ]
                     }
                 });
@@ -112,7 +112,7 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
                 message3= await ctx.reply("Enter your description (max 200 characters):", {
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "Cancel" }]
+                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "cancel" }]
                         ]
                     }
                 });
@@ -133,7 +133,7 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
                 message4= await ctx.reply("how many decimals your token support (from 1 to 18 ):", {
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "Cancel" }]
+                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "cancel" }]
                         ]
                     }
                 });
@@ -162,7 +162,7 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
                 message5 = await ctx.reply("Please enter the image URL for your token:", {
                     reply_markup: {
                         inline_keyboard: [
-                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "Cancel" }]
+                            [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "cancel" }]
                         ]
                     }
                 });

@@ -76,7 +76,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
              await handleStage(ctx,null,next);
 
          }else {
-            message1=await ctx.reply("please enter a name for yout NFT max the 32 chaar", {
+            message1=await ctx.reply("Please enter a name for your NFT (max 32 characters)", {
                 reply_markup:{
                     inline_keyboard :[
                         [
@@ -100,7 +100,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
              await handleStage(ctx,null,next);
 
          }else {
-            message1=await ctx.reply("please enter a symbol of your NFT max 8 char", {
+            message1=await ctx.reply("Please enter a symbol for your NFT (max 10 characters)", {
                 reply_markup:{
                     inline_keyboard :[
                         [
@@ -116,7 +116,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
          case 3:
               if(inputText){
              if(inputText.length > 200){
-                await ctx.reply(" keep the NFT description less than 200 chars")
+                await ctx.reply("Keep the NFT description less than 200 chars")
                 return 
              }
              nftdetails.description=inputText;
@@ -124,7 +124,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
              await handleStage(ctx,null,next);
 
          }else {
-            message1=await ctx.reply("please enter a description for your NFT max the 200 chaar", {
+            message1=await ctx.reply("Please keep the NFT description under 200 characters", {
                 reply_markup:{
                     inline_keyboard :[
                         [
@@ -154,7 +154,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
             } 
             await handleStage(ctx,null,next);
          }else {
-            message1=await ctx.reply("enter a collectible id for your NFT", {
+            message1=await ctx.reply("Enter a collectible id for your NFT", {
                 reply_markup:{
                     inline_keyboard :[
                         [
@@ -170,7 +170,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
       case 5: 
         if(inputText){
              if(isValidUrl(inputText)){
-                await ctx.reply("enter the valid url for uploading the nft");
+                await ctx.reply("Please enter a valid URL for the image");
                 return;
              }
              nftdetails.imgUrl=inputText;
@@ -186,7 +186,7 @@ export async function handleStage(ctx:Context,inputText:string |null ,next: ()=>
                 isPhotolist=false;
              }
          }else {
-            message5=await ctx.reply("upload your NFT", {
+            message5=await ctx.reply("Upload your NFT", {
                 reply_markup:{
                     inline_keyboard :[
                          [{ text: "📸 Image", callback_data: "imgUp" }],
@@ -210,9 +210,9 @@ let  confirmMessage:Message
         reply_markup:{
             inline_keyboard:[
                 [{
-                    text:"yes lets go " ,callback_data:"YesCreateNFT"
+                    text:"Yes Lets Go 🚀 " ,callback_data:"YesCreateNFT"
                 },{
-                    text:"No, not now",
+                    text:"No, not now ",
                     callback_data:"NoDontCreateNFT"
                 }]
             ]
@@ -230,8 +230,8 @@ let  confirmMessage:Message
 
     bot.action("YesCreateNFT",async(str,next)=>{
         str.deleteMessage(confirmMessage.message_id);
-        await str.reply("important please do not use ")
-        await str.answerCbQuery("lets start");
+        await str.reply("Important ! Please do not use")
+        await str.answerCbQuery("Lets start");
          isMetalist=true;
         await handleStage(str,null,next)
     });
@@ -260,9 +260,9 @@ let  confirmMessage:Message
     const ImageUrl=await uploadImagePermUrl(ctx);
 
     if(ImageUrl){
-        ctx.reply("here is your image link ");
-        ctx.reply(`[click to open in browwser](${ImageUrl.ipfsUrl[0]})`,{parse_mode:"MarkdownV2"});
-        ctx.reply(`\`${ImageUrl.ipfsUrl[0] } \``,{parse_mode:"MarkdownV2"} )
+        ctx.reply("Here is your image link ");
+        ctx.reply(`[click to open in browwser](${ImageUrl.ipfsUrl})`,{parse_mode:"MarkdownV2"});
+        ctx.reply(`\`${ImageUrl.ipfsUrl } \``,{parse_mode:"MarkdownV2"} )
         nftdetails.imgUrl=ImageUrl.ipfsUrl[0];
         const isConfirmed=await WalletDeduction({
             nftReg:true
@@ -292,7 +292,7 @@ let  confirmMessage:Message
         await ctx.answerCbQuery("Procces cancelled ")
     })
 
-    bot.action("goback",async(ctx,next)=>{
+    bot.action("Back",async(ctx,next)=>{
 
     const mesgtodelete=[message1,message2,message3,message4,message5]
         for(let i=0;i<mesgtodelete.length ;i++){

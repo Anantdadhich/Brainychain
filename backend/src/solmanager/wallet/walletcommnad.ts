@@ -21,14 +21,14 @@ let boton=false;
 
 export async function handleWalletReply(ctx:Context){
     try {
-     await ctx.reply(warningMessage ,{
-        reply_markup:{
-            inline_keyboard:[
-              [{text : "Show Private Key Seed phrase and Public key", callback_data : 'ShowPvtKey'}],
-                        [{text : "Show only Public key", callback_data : 'ShowPubKeyOnly'}]   
-            ]
+      await ctx.reply(warningMessage, {
+        reply_markup: {
+          inline_keyboard: [
+            [{ text: "Show Private Key, Seed Phrase, and Public Key", callback_data: 'ShowPvtKey' }],
+            [{ text: "Show Only Public Key", callback_data: 'ShowPubKeyOnly' }]
+          ]
         }
-     })
+      });
     } catch (error) {
         console.log(error);
         await ctx.reply("something went wrong");
@@ -49,15 +49,15 @@ export default async function  WalletCommands(){
          })
 
             if(user?.walletSecretkey){
-                ctx.reply("you have already wallet ")
+                ctx.reply("You already have a wallet ")
                 setTimeout(()=> 
-                ctx.reply(`here is your wallet address \` ${user.walletaddress} \` `,{
+                ctx.reply(`Here is your wallet address \` ${user.walletaddress} \` `,{
                     parse_mode:"MarkdownV2"
                 }),1000)
                 return ;
             }
 
-            await ctx.reply("Please enter the password ")
+            await ctx.reply("Please enter a password to secure your wallet ")
             boton=true;
 
            bot.on(message("text"),async(ctx,next)=>{
@@ -73,7 +73,7 @@ export default async function  WalletCommands(){
 
             } catch (error) {
               console.log(error)
-              await ctx.reply("error while generating your wallet ");
+              await ctx.reply("There was an error while generating your wallet ");
               boton=false;
               return ;  
             }
@@ -90,7 +90,7 @@ export default async function  WalletCommands(){
                    })
                 } catch ( erro) {
                 console.log(erro);
-                await ctx.reply("error storing the password")
+                await ctx.reply("There was an error saving your password. Please try again.")
                 boton=false;
                 return;
                }
@@ -98,13 +98,13 @@ export default async function  WalletCommands(){
 
             } catch (error) {
             console.log(error)
-            await ctx.reply("error while in messgaing handler")
+            await ctx.reply("An error occurred while handling your message.")
             boton=false;  
             }
            })
       
 
-           bot.action("showPvtkey",async  (ctx)=>{
+           bot.action("ShowPvtKey",async  (ctx)=>{
                 try {
                const user=await prisma.user.findUnique({
                 where:{
@@ -113,7 +113,7 @@ export default async function  WalletCommands(){
                })
 
                if(!user){
-                ctx.reply("no wallet find please create one wallet ")
+                ctx.reply("No wallet found. Please create one using /createwallet.")
                 return
                }
 
@@ -125,11 +125,11 @@ export default async function  WalletCommands(){
                  
 
 
-                 await ctx.editMessageText(`your seed phrase ${mnemonic} `,{
+                 await ctx.editMessageText(`Here is your seed phrase ${mnemonic} `,{
                     reply_markup:{
                         inline_keyboard:[
                             [{
-                            text:"delete the seed phrase",callback_data:"delete private key "
+                            text:"delete the seed phrase",callback_data:"deleteprivatekeychat"
                             }]
                         ]
                     }
@@ -137,13 +137,13 @@ export default async function  WalletCommands(){
 
              bot.action("deleteprivatekeychat",(ctx)=>{
                 try {
-               ctx.editMessageText("delete chat")
+               ctx.editMessageText("Seed phrase deleted successfully.")
                 } catch (error) {
                     console.error("error",error)
                 }
              })
           
-             await ctx.telegram.sendMessage(`${ctx.chat?.id}` ,"Public id");
+             await ctx.telegram.sendMessage(`${ctx.chat?.id}` ,"Here is your public key:");
 
              setTimeout(() => {
                  ctx.reply(`\` ${walletkeypair.publicKey.toBase58()} \` tap to copy ` ,{
@@ -159,7 +159,7 @@ export default async function  WalletCommands(){
            })
            
 
-          bot.action("showpubkey",async(ctx)=>{
+          bot.action("ShowPubKeyOnly",async(ctx)=>{
               try {
                  const user=await prisma.user.findUnique({
                     where:{
@@ -214,7 +214,7 @@ export async function WalletDeduction({ nftcoll,
     nftReg}:nftorToken,ctx:Context,tokenmetadata:NFTdetails|TokenInfo){
      try {
         setTimeout(()=>{
-            ctx.reply("please enter your password to continue ",{
+            ctx.reply("Please enter your password to continue ",{
                 reply_markup:{
                     force_reply:true
                 }
@@ -228,7 +228,7 @@ export async function WalletDeduction({ nftcoll,
         })
 
         if(!user){
-            ctx.reply("no user found ");
+            ctx.reply("User not found. Please create a wallet first.");
             return  
         }
         
@@ -246,7 +246,7 @@ export async function WalletDeduction({ nftcoll,
                   const result=await bcrypt.compare(ctx.message.text,user.passwordhash)
 
                   if(result){
-                    confirmmess=await ctx.reply("this action will deduct some solana from your account are you sure  ?  to proced",{
+                    confirmmess=await ctx.reply("⚠️ This action will deduct some SOL from your wallet. Are you sure you want to proceed?",{
                         reply_markup:{
                             inline_keyboard:[
                                 [
@@ -260,8 +260,8 @@ export async function WalletDeduction({ nftcoll,
 
                     islist=false;
                   }else {
-                await ctx.reply("wrong password");
-                await ctx.reply("please try again ",{
+                await ctx.reply("Incorrect password. Please try again.");
+                await ctx.reply("Password processing failed. Please try again. ",{
                     reply_markup:{
                         force_reply:true,
                         inline_keyboard:[
@@ -275,7 +275,7 @@ export async function WalletDeduction({ nftcoll,
 
                 } catch (error) {
                     console.log("error in password",error);
-                    ctx.reply("an error while process password")
+                    ctx.reply("Password processing failed. Please try again.")
                 }
             } catch (error) {
                 console.error("err",error);
@@ -298,11 +298,11 @@ export async function WalletDeduction({ nftcoll,
         await  ctx.deleteMessage(confirmmess.message_id)
            isyes=true;
       //nds a message to the user, explaining that the bot is connecting to the blockchain. The process might take some time because blockchain transactions are decentralized.
-           const {message_id} =await ctx.reply("Syncing with the blockchain... Web3 runs on trustless networks, so a few extra seconds now means a safer, decentralized future! While we connect, here's a pro tip: patience is your best crypto")
+           const {message_id} =await ctx.reply("🔄 Syncing with the blockchain... This might take a few seconds. Trustless networks take time, but ensure safety. Tip: Patience is a powerful crypto tool! 🕒")
         //we will  check the user has a wallet  
         const user=await getIsWallet(ctx.from.username!)
         if(!user?.isWallet ===false){
-            await ctx.reply("no wallet found",{
+            await ctx.reply("No wallet found. Please create one",{
                 reply_markup:{
                     inline_keyboard:[
                         [{text:"genrate wallet " ,callback_data:"go baclk generate"}]
@@ -328,8 +328,8 @@ export async function WalletDeduction({ nftcoll,
                 ), {token:true});
 
                 await ctx.reply(result.link);
-                await  ctx.reply("operation success ");
-                await ctx.reply("token not minted yet  /minttoken "  )
+                await  ctx.reply("✅ Token created successfully!");
+                await ctx.reply("⚠️ Token is not minted yet. Please use /minttoken to mint it."  )
 
               } 
            
@@ -347,7 +347,7 @@ export async function WalletDeduction({ nftcoll,
                 await ctx.deleteMessage(message_id);
                 await dbMetricsUpdate(String(ctx.from.username) ,{nft:true});
                 await ctx.reply(result.link)
-                await ctx.reply(" created successfully ")
+                await ctx.reply("✅ NFT collection created successfully!")
                
               }
           } catch (error) {
@@ -362,7 +362,7 @@ export async function WalletDeduction({ nftcoll,
                 await ctx.deleteMessage(message_id);
                 await dbMetricsUpdate(String(ctx.from.username) ,{nft:true})
                await ctx.reply(result.link);
-               await ctx.reply("operation succeess ")
+               await ctx.reply("✅ NFT created successfully!")
                
      
             }

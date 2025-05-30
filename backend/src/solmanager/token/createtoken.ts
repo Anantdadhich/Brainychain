@@ -29,13 +29,21 @@ const metaplex=createUmi(clusterApiUrl("devnet")).use(mplTokenMetadata())
 
 
 export async function creatminttoken(tokenmetadata:TokenInfo,name:string){
+    
+    
+    
     const user=await prisma.user.findUnique({
         where:{
             name:name
         }
     })
 
-const mnemonic=user?.walletMnemonic;
+    if (!user || !user.walletMnemonic) {
+        throw new Error(`User ${name} not found or has no wallet mnemonic.`);
+    }
+
+
+const mnemonic=user.walletMnemonic;
 const wallet=await convertToKeyPair(mnemonic!);
 
 //json rpc
@@ -74,7 +82,7 @@ const metadataPDAandbump=PublicKey.findProgramAddressSync([
 
 const instructions=createMetadataAccountV3(metaplex,{
     mint: metaplexPubkey(tokenMint)   ,
-    mintAuthority:createNoopSigner(metaplexPubkey(wallet.userkeypair.secretKey)),
+    mintAuthority:createNoopSigner(metaplexPubkey(wallet.userkeypair.publicKey)),
 
     metadata:metaplexPubkey(metadataPDA),
     isMutable:true,
@@ -96,8 +104,8 @@ const transactionSignatue=await sendAndConfirmTransaction(
     [wallet.userkeypair]
 )
 
-
-const link=getExplorerLink("address",tokenMint.toString(),'devnet')
+console.log(`transaction signature ${transactionSignatue}`)
+const link=getExplorerLink("transaction",transactionSignatue,'devnet')
 
 return  {link,minimumReq}
 
@@ -112,8 +120,10 @@ export async function  mintToken(tokenpubkey:PublicKey,mintamount:number,decimal
             name:name
         }
     })
-   
-const mnemonic=user?.walletMnemonic;
+    if (!user || !user.walletMnemonic) {
+        throw new Error(`User ${name} not found or has no wallet mnemonic.`);
+    }
+const mnemonic=user.walletMnemonic;
 const wallet=await convertToKeyPair(mnemonic!);
 
 const tokeninfo=await getMint(connection,tokenpubkey)
@@ -135,7 +145,8 @@ try {
         tokenpubkey,
         tokenaccount.address,
         new PublicKey(wallet.userpubkey),
-        mintamount * tokeninSmallest
+        mintamount * tokeninSmallest,
+        
     )
     return  true;
 } catch (error) {

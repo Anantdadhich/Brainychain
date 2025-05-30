@@ -47,11 +47,11 @@ export default async function tokenCommnads() {
     let isexternalaclist=false;
 
     bot.command("minttoken",async(ctx)=>{
-        await ctx.reply("please enter the public key of the token ", {reply_markup:{
+        await ctx.reply("Please enter the public key of the token", {reply_markup:{
             force_reply:true
         }})
 
-        const base58Regx=/^[1-9A-HJ-NP-Za-km-z]+$/;
+        const base58Regx = /^[1-9A-HJ-NP-Za-km-z]+$/;
 
         mintokenlist=true;
         bot.on(message("text"),async (ctx,next)=>{
@@ -63,7 +63,7 @@ export default async function tokenCommnads() {
             
             try {
               if(!base58Regx.test(inputtext)){
-                throw new Error("invalid characters in the inputext")
+                throw new Error("Invalid characters in the inputext")
               }
               tokenPublicKey=new PublicKey(inputtext)
               //now show the mint tokens
@@ -71,8 +71,8 @@ export default async function tokenCommnads() {
               await ctx.reply(MINT_TOKEN_DESTINATION_MSG ,{
                 reply_markup:{
                     inline_keyboard:[
-                     [{ text: "🔹 Mint to Current Account", callback_data: "existAc" }],
-                            [{ text: "🔹 Mint to External Account (via Public Key)", callback_data: "externalAc" }]       
+                     [{ text: "🔹 Mint to Current Account", callback_data: "exitac" }],
+                            [{ text: "🔹 Mint to External Account (via Public Key)", callback_data: "externalac" }]       
                     ]
                 }
               })
@@ -144,7 +144,7 @@ export default async function tokenCommnads() {
          if(stage===1){
             try {
            if(!baase58RRegx.test(inputtext)){
-            throw new Error("invalid characters in the input  ")
+            throw new Error("Invalid characters in the input  ")
            }
             pubKey=new PublicKey(inputtext);
             await promptformintamount();

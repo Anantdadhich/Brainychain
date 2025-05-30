@@ -38,11 +38,15 @@ if (process.env.WEBHOOK_URL) {
 
 let prompt=false;
 //user start the bot 
-const messagestart= `Welcome to BrainyChain ! 🌐
+const messagestart= `Welcome to BrainyChain! 🌟
 
-Empower your Web3 journey with BrainyChain. Quickly generate wallets, seamlessly create tokens, and effortlessly mint NFTs. Store your digital assets forever.
+🚀 Empower your Web3 journey with BrainyChain:
+• 💼 Generate secure wallets instantly
+• 🪙 Create custom tokens seamlessly
+• 🎨 Mint unique NFTs effortlessly
+• 🔒 Store your digital assets forever
 
-`;
+Let's get started! 🚀`;
 
 let isbotstarting=false;
 
@@ -50,13 +54,13 @@ export default function botCommands(){
 bot.command("start",async(str)=>{
     try {
         if(!str.from?.username){
-          str.reply("No username found. Please register your username in Telegram first before using this bot.");
+          str.reply("⚠️ No username found. Please set up your Telegram username in settings before using this bot.");
                 return;   
         }
 
         await addUser(str.from.username);
         bot.telegram.sendMessage(str.chat.id,messagestart)
-        str.reply("To secure your wallet, please create a strong password. This will help protect your assets and keep your account safe!",{reply_markup:{force_reply:true}});
+        str.reply("🔐 To secure your wallet, please create a strong password. This will help protect your assets and keep your account safe!",{reply_markup:{force_reply:true}});
         isbotstarting=true;
 
         bot.on(message("text"),async(str,next)=>{
@@ -65,14 +69,14 @@ bot.command("start",async(str)=>{
             return  next();
           }
 
-          str.reply("Password set succesfully");
-          str.reply("start with /createwallet");
+          str.reply("✅ Password set successfully!");
+          str.reply("🎯 Get started by using /createwallet command");
 
          setTimeout(()=>hashPassandstore(str,str.message.text),1000)
          isbotstarting=false;
       } catch (error) {
            console.error("Error in text message handler:", error);
-                    str.reply("An error occurred while setting password");
+                    str.reply("❌ An error occurred while setting your password. Please try again.");
       }
         })
 
@@ -119,7 +123,7 @@ bot.on(message('sticker'),async(str)=>{
 bot.command("askai",async(str)=>{
     try {
  if(!str.from.username){
-    str.reply("no username");
+    str.reply("⚠️ Username not found. Please set up your Telegram username first.");
     return;
  }
  const user=await prisma.user.findUnique({
@@ -129,18 +133,18 @@ bot.command("askai",async(str)=>{
  })
 
    if(!user){
-        str.reply("no user found.Please use /start ")
+        str.reply("❌ User not found. Please use /start to begin.")
         return 
     }
 
-    await str.reply("Hey there! 👋 I'm BrainyChain, your AI-powered Telegram bot created by adtech 🤖. Feel free to ask me anything – I'm here to help with token creation 💰, NFT minting 🎨, wallet management 🔐, and so much more! Just drop your question, and I'll be ready for the next chat! 💬");
-            await str.reply("To exit the chat, use /exit command");
+    await str.reply("👋 Hey there! I'm BrainyChain, your AI-powered Telegram bot created by adtech 🤖\n\nI can help you with:\n• 💰 Token creation\n• 🎨 NFT minting\n• 🔐 Wallet management\n• 💬 And much more!\n\nJust ask me anything, and I'll be happy to assist! 🚀");
+            await str.reply("💡 To exit the chat, use /exit command");
        
             prompt=true;
     
         } catch (error) {
           console.error("Error in askai ",error)    
-   str.reply("something went wrong ") 
+   str.reply("❌ Something went wrong. Please try again later.") 
     }
 });
 
@@ -148,7 +152,7 @@ bot.command("askai",async(str)=>{
 bot.command("exit",async (str)=>{
         try {
         if(!str.from.username){
-    str.reply("no username");
+    str.reply("⚠️ Username not found. Please set up your Telegram username first.");
     return;
  }
  const user=await prisma.user.findUnique({
@@ -158,17 +162,17 @@ bot.command("exit",async (str)=>{
  })
 
    if(!user){
-        str.reply("no user found.Please use /start ")
+        str.reply("❌ User not found. Please use /start to begin.")
         return 
     }
 
     if(prompt){
         prompt=false;
-        str.reply("hat ended! Use /askai to start a new chat.")
+        str.reply("👋 Chat ended! Use /askai to start a new conversation.")
     }
         } catch (error) {
         console.error("error in exit",error);
-        str.reply("something went wrong");         
+        str.reply("❌ Something went wrong. Please try again later.");         
         }
 })
 
@@ -181,7 +185,7 @@ bot.on(message("text"),async (str,next)=>{
  
 
        if(!str.from.username){
-    str.reply("no username");
+    str.reply("⚠️ Username not found. Please set up your Telegram username first.");
     return;
  }
  const user=await prisma.user.findUnique({
@@ -191,7 +195,7 @@ bot.on(message("text"),async (str,next)=>{
  })
 
    if(!user){
-        str.reply("no user found.Please use /start ")
+        str.reply("❌ User not found. Please use /start to begin.")
         return 
     }
 
