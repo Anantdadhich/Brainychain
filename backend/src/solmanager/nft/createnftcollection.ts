@@ -41,7 +41,6 @@ export default async function CreateNFTcollec(nftdetails:NFTdetails,name:string)
        }  
 
        const wallet=await convertToKeyPair(mnemonic);
-             //@ts-ignore
        const metaplex=createUmi(clusterApiUrl("devnet") as Cluster);
        const umikeypair=metaplex.eddsa.createKeypairFromSecretKey(wallet.userkeypair.secretKey)
 

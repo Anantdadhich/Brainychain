@@ -38,12 +38,10 @@ export async function creatminttoken(tokenmetadata:TokenInfo,name:string){
         }
     })
 
-    if (!user || !user.walletMnemonic) {
-        throw new Error(`User ${name} not found or has no wallet mnemonic.`);
-    }
+    
 
 
-const mnemonic=user.walletMnemonic;
+const mnemonic=user?.walletMnemonic;
 const wallet=await convertToKeyPair(mnemonic!);
 
 //json rpc
@@ -83,7 +81,6 @@ const metadataPDAandbump=PublicKey.findProgramAddressSync([
 const instructions=createMetadataAccountV3(metaplex,{
     mint: metaplexPubkey(tokenMint)   ,
     mintAuthority:createNoopSigner(metaplexPubkey(wallet.userkeypair.publicKey)),
-
     metadata:metaplexPubkey(metadataPDA),
     isMutable:true,
     payer:createNoopSigner(metaplexPubkey(wallet.userkeypair.publicKey)),
@@ -105,7 +102,7 @@ const transactionSignatue=await sendAndConfirmTransaction(
 )
 
 console.log(`transaction signature ${transactionSignatue}`)
-const link=getExplorerLink("transaction",transactionSignatue,'devnet')
+const link=getExplorerLink("address",tokenMint.toString(),'devnet')
 
 return  {link,minimumReq}
 
@@ -120,10 +117,8 @@ export async function  mintToken(tokenpubkey:PublicKey,mintamount:number,decimal
             name:name
         }
     })
-    if (!user || !user.walletMnemonic) {
-        throw new Error(`User ${name} not found or has no wallet mnemonic.`);
-    }
-const mnemonic=user.walletMnemonic;
+   
+const mnemonic=user?.walletMnemonic;
 const wallet=await convertToKeyPair(mnemonic!);
 
 const tokeninfo=await getMint(connection,tokenpubkey)

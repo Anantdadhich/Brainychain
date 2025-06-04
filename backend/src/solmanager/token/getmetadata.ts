@@ -142,7 +142,7 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
 
             case 5 : 
             if(inputText){
-                if(!validurl(inputText)){
+                if(validurl(inputText)){
                     await ctx.reply("Oops! That doesn't look like a valid URL. Please enter a valid image URL.")
                    return;
                 }
@@ -152,16 +152,19 @@ async function handleStage(ctx: Context, inputText: string | null, next: () => v
                     stage = 1;
                     await ctx.reply("Success! Token metadata created.");
                     next();
-                } else {
-                    stage = 1;
+             } else if(!confirm){
+                    stage = 1; 
+                    next()
                     ismetadatalist = false;
                     isPhlist = false;
-                    next();
+                     
                 }
             } else {
-                message5 = await ctx.reply("Please enter the image URL for your token:", {
+                message5 = await ctx.reply("Please choose what would you like to Upload for your token url", {
                     reply_markup: {
                         inline_keyboard: [
+                            [{ text: "📸 Image", callback_data: "imgUp" }],
+                            [{ text: "🌐 URL of Image", callback_data: "urlUp" }],
                             [{ text: "Go Back", callback_data: "goBack" }, { text: "Cancel", callback_data: "cancel" }]
                         ]
                     }
@@ -198,7 +201,7 @@ export async function getmetadatafromuser(ctx:Context){
                  
     })
     
-    bot.action("ImgUp",async(ctx)=>{
+    bot.action("imgUp",async(ctx)=>{
         ctx.deleteMessage(message5!.message_id) 
         await ctx.reply(`${WARNING_MESSAGE_IMAGE_UPLOAD}`) 
         isPhlist=true 
@@ -222,9 +225,9 @@ export async function getmetadatafromuser(ctx:Context){
         const imageUrl = await uploadImagePermUrl(ctx);
         if (imageUrl) {
             ctx.reply("Here is your image link");
-            ctx.reply(`[Click to open in browser](${imageUrl.ipfsHash.gatewayUrls[0]})`, { parse_mode: 'MarkdownV2' });
-            ctx.reply(`\`${imageUrl.ipfsHash.gatewayUrls[0]}\``, { parse_mode: 'MarkdownV2' });
-            tokeninfo.imgUrl = imageUrl.ipfsHash.gatewayUrls[0];
+            ctx.reply(`[Click to open in browser](${imageUrl.ipfsUrl})`, { parse_mode: 'MarkdownV2' });
+            ctx.reply(`\`${imageUrl.ipfsUrl}\``, { parse_mode: 'MarkdownV2' });
+            tokeninfo.imgUrl = imageUrl.ipfsUrl;
             const isConfirmed = await WalletDeduction({ token: true }, ctx, tokeninfo);
             if (isConfirmed) {
                 stage = 1;

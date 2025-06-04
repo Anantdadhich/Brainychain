@@ -14,7 +14,7 @@ import { mintToken } from "./createtoken";
 
 
 export default async function tokenCommnads() {
-    bot.command("createtoken",async(str)=>{
+    bot.command("create_token",async(str)=>{
         const user=await prisma.user.findUnique({
             where:{
                 name:str.from.username
@@ -108,7 +108,7 @@ export default async function tokenCommnads() {
             return ctx.reply(INVALID_AMOUNT_MSG);
           } 
 
-          const isminted=await mintToken(tokenPublicKey,mintaccount,9,new PublicKey(userwallet.userpubkey),ctx.from.username)
+          const isminted=await mintToken(tokenPublicKey,mintaccount,9,new PublicKey(userwallet.userpubkey),ctx.from.username!)
                if (isminted) {
                     ctx.reply(MINT_SUCCESS_MSG("Token", "your account"));
                 } else {

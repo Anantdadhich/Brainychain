@@ -263,7 +263,7 @@ let  confirmMessage:Message
         ctx.reply("Here is your image link ");
         ctx.reply(`[click to open in browwser](${ImageUrl.ipfsUrl})`,{parse_mode:"MarkdownV2"});
         ctx.reply(`\`${ImageUrl.ipfsUrl } \``,{parse_mode:"MarkdownV2"} )
-        nftdetails.imgUrl=ImageUrl.ipfsUrl[0];
+        nftdetails.imgUrl=ImageUrl.ipfsUrl;
         const isConfirmed=await WalletDeduction({
             nftReg:true
         },ctx,nftdetails);
